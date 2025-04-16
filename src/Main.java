@@ -1,9 +1,7 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.io.File;
 
 public class Main {
     private static final String MAIN_PATH = "/Users/citizen/IdeaProjects/HW_FILES/Games";
@@ -36,6 +34,23 @@ public class Main {
 
         // Запись лога в файл temp.txt
         writeLogToFile(MAIN_PATH + "/temp/temp.txt");
+
+        // Задние №2
+        GameProgress gp1 = new GameProgress(100, 80, 5, 145.0);
+        GameProgress gp2 = new GameProgress(40, 60, 12, 905.54);
+        GameProgress gp3 = new GameProgress(90, 15, 1, 89.01);
+        saveGame(MAIN_PATH + "/savegames/save1.dat", gp1);
+        saveGame(MAIN_PATH + "/savegames/save2.dat", gp2);
+        saveGame(MAIN_PATH + "/savegames/save3.dat", gp3);
+    }
+
+    private static void saveGame(String filePath, GameProgress gameProgress) {
+        try (FileOutputStream fos = new FileOutputStream(filePath);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(gameProgress);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void createDirectory(File directory) {
