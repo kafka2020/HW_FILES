@@ -1,7 +1,8 @@
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class Main {
     private static final String MAIN_PATH = "/Users/citizen/IdeaProjects/HW_FILES/Games";
@@ -42,6 +43,39 @@ public class Main {
         saveGame(MAIN_PATH + "/savegames/save1.dat", gp1);
         saveGame(MAIN_PATH + "/savegames/save2.dat", gp2);
         saveGame(MAIN_PATH + "/savegames/save3.dat", gp3);
+
+        List<String> savePathList = Arrays.asList(
+                MAIN_PATH + "/savegames/save1.dat",
+                MAIN_PATH + "/savegames/save2.dat",
+                MAIN_PATH + "/savegames/save3.dat"
+        );
+        zipFiles(MAIN_PATH + "/savegames/zip.zip", savePathList);
+
+        for (String savePath : savePathList) {
+            File file = new File(savePath);
+            file.delete();
+        }
+    }
+
+    private static void zipFiles(String zipFilePath, List<String> filePathList) {
+        try (FileOutputStream fos = new FileOutputStream(zipFilePath);
+             ZipOutputStream zout = new ZipOutputStream(fos)) {
+            for (String filePath : filePathList) {
+                File file = new File(filePath);
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    ZipEntry entry = new ZipEntry(file.getName());
+                    zout.putNextEntry(entry);
+                    byte[] buffer = new byte[fis.available()];
+                    fis.read(buffer);
+                    zout.write(buffer);
+                    zout.closeEntry();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void saveGame(String filePath, GameProgress gameProgress) {
