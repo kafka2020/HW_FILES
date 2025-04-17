@@ -59,6 +59,18 @@ public class Main {
 
         // Задание №3
         openZip(MAIN_PATH + "/savegames/zip.zip", MAIN_PATH + "/savegames/");
+        System.out.println(openProgress(MAIN_PATH + "/savegames/save2.dat"));
+    }
+
+    private static GameProgress openProgress(String savePath) {
+        GameProgress gameProgress = null;
+        try (FileInputStream fis = new FileInputStream(savePath);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            gameProgress = (GameProgress) ois.readObject();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return gameProgress;
     }
 
     private static void openZip(String zipFilePath, String unzipDirPath) {
