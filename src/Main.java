@@ -94,8 +94,8 @@ public class Main {
     }
 
     private static void zipFiles(String zipFilePath, List<String> filePathList) {
-        try (FileOutputStream fos = new FileOutputStream(zipFilePath);
-             ZipOutputStream zout = new ZipOutputStream(fos)) {
+        try (FileOutputStream fout = new FileOutputStream(zipFilePath);
+             ZipOutputStream zout = new ZipOutputStream(fout)) {
             for (String filePath : filePathList) {
                 File file = new File(filePath);
                 try (FileInputStream fis = new FileInputStream(file)) {
