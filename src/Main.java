@@ -2,6 +2,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class Main {
@@ -54,6 +55,29 @@ public class Main {
         for (String savePath : savePathList) {
             File file = new File(savePath);
             file.delete();
+        }
+
+        // Задание №3
+        openZip(MAIN_PATH + "/savegames/zip.zip", MAIN_PATH + "/savegames/");
+    }
+
+    private static void openZip(String zipFilePath, String unzipDirPath) {
+        try (FileInputStream fin = new FileInputStream(zipFilePath);
+             ZipInputStream zin = new ZipInputStream(fin)) {
+            ZipEntry entry;
+            String name;
+            while ((entry = zin.getNextEntry()) != null) {
+                name = entry.getName();
+                try (FileOutputStream fout = new FileOutputStream(unzipDirPath + name)) {
+                    for (int c = zin.read(); c != -1 ; c = zin.read()) {
+                        fout.write(c);
+                    }
+                    fout.flush();
+                }
+                zin.closeEntry();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());;
         }
     }
 
