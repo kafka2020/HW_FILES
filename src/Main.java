@@ -81,7 +81,7 @@ public class Main {
             while ((entry = zin.getNextEntry()) != null) {
                 name = entry.getName();
                 try (FileOutputStream fout = new FileOutputStream(unzipDirPath + name)) {
-                    for (int c = zin.read(); c != -1 ; c = zin.read()) {
+                    for (int c = zin.read(); c != -1; c = zin.read()) {
                         fout.write(c);
                     }
                     fout.flush();
@@ -89,7 +89,7 @@ public class Main {
                 zin.closeEntry();
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
